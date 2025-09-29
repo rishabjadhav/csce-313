@@ -6,9 +6,9 @@
     Date: 2/8/20
 	
 	Please include your Name, UIN, and the date below
-	Name:
-	UIN:
-	Date:
+	Name: Rishab Jadhav
+	UIN: 533009378
+	Date: September 24th, 2025
 */
 #include "common.h"
 #include "FIFORequestChannel.h"
@@ -17,6 +17,19 @@ using namespace std;
 
 
 int main (int argc, char *argv[]) {
+	// Create child process, duplicates current process
+	pid_t pid = fork();
+
+	if (pid < 0) {
+		// ERROR STATE
+		cout << "ERROR" << endl;
+	} else if (pid == 0) {
+		// pid == 0, running in CHILD process, to run server
+
+		// Run server
+		execlp("./server", "server", NULL);
+	}
+
 	int opt;
 	int p = 1;
 	double t = 0.0;
@@ -25,16 +38,16 @@ int main (int argc, char *argv[]) {
 	string filename = "";
 	while ((opt = getopt(argc, argv, "p:t:e:f:")) != -1) {
 		switch (opt) {
-			case 'p':
+			case 'p':	// patient argument
 				p = atoi (optarg);
 				break;
-			case 't':
+			case 't':	// time argument
 				t = atof (optarg);
 				break;
-			case 'e':
+			case 'e':	// ecg number argument
 				e = atoi (optarg);
 				break;
-			case 'f':
+			case 'f':	// file name argument
 				filename = optarg;
 				break;
 		}
@@ -42,9 +55,8 @@ int main (int argc, char *argv[]) {
 
     FIFORequestChannel chan("control", FIFORequestChannel::CLIENT_SIDE);
 	
-	// example data point request
     char buf[MAX_MESSAGE]; // 256
-    datamsg x(1, 0.0, 1);
+    datamsg x(p, t, e);
 	
 	memcpy(buf, &x, sizeof(datamsg));
 	chan.cwrite(buf, sizeof(datamsg)); // question
@@ -67,4 +79,5 @@ int main (int argc, char *argv[]) {
 	// closing the channel    
     MESSAGE_TYPE m = QUIT_MSG;
     chan.cwrite(&m, sizeof(MESSAGE_TYPE));
+	wait(NULL);
 }
