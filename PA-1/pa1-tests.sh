@@ -1,3 +1,4 @@
+#!/bin/bash
 echo -e "To remove colour from tests, set COLOUR to 1 in sh file\n"
 COLOUR=0
 if [[ COLOUR -eq 0 ]]; then
