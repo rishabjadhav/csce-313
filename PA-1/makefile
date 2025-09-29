@@ -21,7 +21,7 @@ all: clean $(BINS)
 .PHONY: clean test
 
 clean:
-	rm -f server client fifo* data*_* *.tst *.o *.csv received/*
+	rm -f server client fifo* data*_* *.tst *.o *.csv received/* test.bin
 
 test: all
 	chmod u+x pa1-tests.sh
