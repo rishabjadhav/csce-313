@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <stdio.h>
-#include <threading.h>
+#include "threading.h"
 
 void dosomething(int32_t x, int32_t y)
 {
